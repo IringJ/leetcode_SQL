@@ -1,0 +1,10 @@
+
+1082. Sales Analysis I
+SELECT seller_id
+FROM (SELECT seller_id, 
+        rank() over(order by (SUM(price)) desc) AS price_rank
+        FROM Sales
+        GROUP BY seller_id) AS tb1
+WHERE price_rank = 1;
+
+
