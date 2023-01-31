@@ -1,0 +1,28 @@
+with c1 as (
+select 
+	e.name Employee,
+	e.salary Salary,
+	d.name Department
+from 
+	employee e
+left join 
+	department d on e.departmentId = d.id),
+c2 as (
+select 
+	employee,
+	salary,
+	department,
+	dense_rank() over(
+		partition by department
+		order by Salary desc
+	) rk
+from 
+	c1)
+select 
+	Department,
+	Employee,
+	Salary
+from 
+    c2 
+where 
+    rk <= 3
