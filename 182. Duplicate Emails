@@ -1,0 +1,11 @@
+Question: 182. Duplicate Emails
+Difficulty: Easy
+Solution: 
+select 
+	Email 
+from 
+	person
+group by 
+	email 
+having 
+	count(*) > 1
