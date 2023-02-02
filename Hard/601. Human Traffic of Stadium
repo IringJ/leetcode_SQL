@@ -1,0 +1,63 @@
+with cte as (
+select 
+	id,
+	visit_date,
+	people 
+from 
+	stadium 
+where 
+	people >= 100)
+select 
+	distinct c1.id, 
+	c1.visit_date,
+	c1.people 
+from 
+	cte c1
+join 
+	cte c2 
+join 
+	cte c3 
+on (c1.id = c2.id + 1 and c1.id = c3.id + 2)
+    or 
+    (c1.id = c2.id - 1 and c1.id = c3.id + 1)
+    or 
+    (c1.id = c2.id - 1 and c1.id = c3.id - 2)
+order by 
+    c1.visit_date 
+    
+    
+    
+    
+### Solution 2 ###
+with cte as(
+select 
+    id, 
+    visit_date,
+    people,
+    id - row_number() over() rk
+from 
+    stadium
+where 
+    people >= 100),
+cte2 as(
+select 
+    rk
+from 
+    cte 
+group by 
+    rk 
+having
+    count(rk) >= 3)
+select 
+    id, 
+    visit_date,
+    people 
+from 
+    cte
+join 
+    cte2 using(rk)
+order by 
+    visit_date
+    
+    
+    
