@@ -1,0 +1,60 @@
+### Solution 1:
+with cte as(
+select 
+	client_id,
+	driver_id,
+    status, 
+    request_at
+from 
+	trips t
+join 
+	users u on t.client_id = u.users_id and u.banned = 'No'
+join 
+    users u1 on t.driver_id = u1.users_id and u1.banned = 'No'),
+cte1 as (
+select 
+    request_at,
+    count(status) cancel
+from 
+    cte 
+where 
+    status != 'completed'
+group by 
+    request_at)
+select 
+    request_at Day,
+    ifnull(round(cancel /count(*),2),0) 'Cancellation Rate'
+from 
+    cte 
+left join 
+    cte1 using(request_at)
+where 
+    request_at between '2013-10-01' and '2013-10-03' 
+group by 
+    request_at
+    
+    
+    
+### Solution 2:
+with cte as(
+select 
+    id,
+    request_at,
+    if(status !='completed',1,0) cancel
+from 
+    trips t 
+join 
+    users u1 on t.client_id = u1.users_id and u1.banned = 'No'
+join 
+    users u2 on t.driver_id = u2.users_id and u2.banned = 'No'
+where 
+    request_at between '2013-10-01' and '2013-10-03')
+select 
+    request_at Day,
+    round(sum(cancel)/count(id),2) 'Cancellation Rate'
+from 
+    cte
+group by 
+    request_at
+order by 
+    1
