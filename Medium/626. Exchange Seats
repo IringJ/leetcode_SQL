@@ -1,0 +1,32 @@
+# join two tables together by id+1 & id+1
+select 
+    s.id,
+    case 
+    when s1.student is not null and mod(s.id,2) != 0 then s1.student 
+    when s2.student is not null and mod(s.id,2) = 0 then s2.student 
+    else s.student
+    end student
+from 
+    seat s 
+left join 
+    seat s1 on s.id = s1.id-1
+left join 
+    seat s2 on s.id = s2.id+1
+order by 
+    s.id asc
+    
+    
+###########################################
+Solution 2: 
+# manipulate the id (id is a continuous increment)
+select 
+    case 
+    when mod(id, 2) !=0 and id not in (select max(id) from seat)then id+1
+    when mod(id,2) =0 then id -1
+    else id
+    end id,
+    student 
+from 
+    seat 
+order by
+    1
