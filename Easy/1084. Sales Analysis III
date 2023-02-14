@@ -19,10 +19,12 @@ having
 ### Method 2 ###
 ### not between 
 select 
-    product_id,
+    distinct product_id,
     product_name 
 from 
     product 
+join 
+    sales using (product_id)
 where
     product_id not in (select 
                             product_id
@@ -32,3 +34,5 @@ where
                             sale_date not between '2019-01-01'
                                                     and 
                                                     '2019-03-31')
+    and 
+    sale_date between '2019-01-01' and '2019-03-31'
