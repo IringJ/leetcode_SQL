@@ -1,6 +1,12 @@
-SELECT seller_id
-FROM (SELECT seller_id, 
-        rank() over(order by (SUM(price)) desc) AS price_rank
-        FROM Sales
-        GROUP BY seller_id) AS tb1
-WHERE price_rank = 1;
+select 
+    distinct author_id id
+from 
+    views 
+where 
+    views.author_id = views.viewer_id 
+group by 
+    1 
+having 
+    count(*) >= 1 
+order by 
+    1
