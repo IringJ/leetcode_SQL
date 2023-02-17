@@ -1,0 +1,41 @@
+select 
+    id,
+    sum(case when month = 'Jan' then revenue end) Jan_Revenue,
+    sum(case when month = 'Feb' then revenue end) Feb_Revenue,
+    sum(case when month = 'Mar' then revenue end) Mar_Revenue,
+    sum(case when month = 'Apr' then revenue end) Apr_Revenue,
+    sum(case when month = 'May' then revenue end) May_Revenue,
+    sum(case when month = 'Jun' then revenue end) Jun_Revenue,
+    sum(case when month = 'Jul' then revenue end) Jul_Revenue,
+    sum(case when month = 'Aug' then revenue end) Aug_Revenue,
+    sum(case when month = 'Sep' then revenue end) Sep_Revenue,
+    sum(case when month = 'Oct' then revenue end) Oct_Revenue,
+    sum(case when month = 'Nov' then revenue end) Nov_Revenue,
+    sum(case when month = 'Dec' then revenue end) Dec_Revenue
+from 
+    department
+group by 
+    id
+    
+    
+    
+    
+##### Solution 2 #####
+select 
+    id,
+    sum(if(month = 'Jan', revenue, null)) Jan_Revenue,
+    sum(if(month = 'Feb', revenue, null)) Feb_Revenue,
+    sum(if(month = 'Mar', revenue, null)) Mar_Revenue,
+    sum(if(month = 'Apr', revenue, null)) Apr_Revenue,
+    sum(if(month = 'May', revenue, null)) May_Revenue,
+    sum(if(month = 'Jun', revenue, null)) Jun_Revenue,
+    sum(if(month = 'Jul', revenue, null)) Jul_Revenue,
+    sum(if(month = 'Aug', revenue, null)) Aug_Revenue,
+    sum(if(month = 'Sep', revenue, null)) Sep_Revenue,
+    sum(if(month = 'Oct', revenue, null)) Oct_Revenue,
+    sum(if(month = 'Nov', revenue, null)) Nov_Revenue,
+    sum(if(month = 'Dec', revenue, null)) Dec_Revenue
+from 
+    department
+group by 
+    id
