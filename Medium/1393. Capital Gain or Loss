@@ -1,0 +1,23 @@
+#### Method 1 if #### 
+select 
+    stock_name, 
+    sum(if(operation = 'Sell', price, price * -1)) capital_gain_loss
+from 
+    stocks 
+group by 
+    stock_name
+    
+    
+    
+##############################
+#### Method 2 Case when ####
+select 
+    stock_name, 
+    sum(case
+    when operation = 'Buy' then price * -1
+    else price
+    end) capital_gain_loss
+from 
+    stocks 
+group by 
+    stock_name
