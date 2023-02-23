@@ -1,0 +1,21 @@
+select 
+    user_id,
+    concat(upper(left(name, 1)),lower(right(name, length(name)-1))) name
+from 
+    users 
+order by 
+    1
+    
+    
+    
+    
+    
+########################################
+#### Method 2 substring ####
+select 
+  user_id, 
+  concat(upper(left(name,1)), lower(substring(name, 2))) name
+FROM 
+  users
+order by 
+  1;
