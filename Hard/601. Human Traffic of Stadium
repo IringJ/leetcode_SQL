@@ -61,3 +61,47 @@ order by
     
     
     
+
+
+#### solution 3 ####
+# number the events  
+with c 
+as(
+select
+    id, 
+    visit_date,
+    people,
+    row_number() over(
+        order by id
+    ) row_num
+from 
+    stadium),
+c1 
+as(
+select 
+    id,
+    visit_date,
+    people,
+    row_num
+from 
+    c
+where 
+    people >= 100)
+select 
+    id,
+    visit_date,
+    people 
+from 
+    c1
+where 
+    (row_num + 1 in (select row_num from c1)
+    and 
+    row_num + 2 in (select row_num from c1))
+    or 
+    (row_num + 1 in (select row_num from c1)
+    and 
+    row_num - 1 in (select row_num from c1))
+    or
+    (row_num - 1 in (select row_num from c1)
+    and 
+    row_num - 2 in (select row_num from c1))
