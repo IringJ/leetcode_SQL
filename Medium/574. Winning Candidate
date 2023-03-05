@@ -1,0 +1,34 @@
+
+### solution 1 ###
+with cte as(
+    select 
+        c.name,
+        count(vote.id) count_vote
+    from 
+        candidate c
+    left join 
+        vote on c.id = vote.candidateId
+    group by 
+        c.id)
+select 
+    name
+from 
+    cte
+where 
+    count_vote in (select 
+                        max(count_vote)
+                    from 
+                        cte)
+                        
+### solution 2 ###
+select 
+    name 
+from 
+    candidate c
+left join 
+    vote v on c.id = v.candidateId
+group by 
+    name
+order by 
+    count(v.id) desc
+limit 1
