@@ -1,0 +1,20 @@
+with cte as(
+select 
+    e1.id,
+    e1.name
+from 
+    employee e1
+left join 
+    employee e2
+on 
+    e1.id = e2.managerId
+where 
+    e2.name is not null)
+select 
+    name 
+from 
+    cte 
+group by 
+    id, name
+having 
+    count(id) >= 5
