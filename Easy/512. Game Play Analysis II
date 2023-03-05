@@ -1,0 +1,59 @@
+### solution 1 ###
+### with CTE to find the min event_date 
+
+with cte as(
+SELECT 
+    player_id,
+    min(event_date) min_date
+from 
+    activity 
+group by 
+    player_id)
+select 
+    a.player_id, 
+    device_id 
+from 
+    cte 
+join 
+    activity a
+on 
+    cte.player_id = a.player_id 
+    and 
+    cte.min_date = a.event_date
+    
+    
+### solution 2 ###  
+### with row_number 
+select 
+    player_id,
+    device_id 
+from (
+select 
+    player_id,
+    device_id,
+    event_date,
+    row_number() over(
+                    partition by player_id
+                    order by event_date asc) rk
+from 
+    activity) a
+where 
+    rk = 1
+    
+    
+    
+### solution 3 ###  
+### use where in ### 
+select 
+    player_id,
+    device_id 
+from 
+    activity 
+where 
+    (player_id, event_date) in (select 
+                                    player_id,
+                                    min(event_date)
+                                from 
+                                    activity
+                                group by 
+                                    player_id)
