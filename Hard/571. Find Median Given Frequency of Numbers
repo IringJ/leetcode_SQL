@@ -1,0 +1,16 @@
+### companies: Pinterest### 
+
+# code:
+with cte as(
+select 
+    num,
+    sum(frequency) over(order by num) - frequency lower_num,
+    sum(frequency) over(order by num) upper_num,
+    sum(frequency) over() / 2 medium_num
+from numbers)
+select 
+    round(avg(num),1) median
+from 
+    cte 
+where 
+    medium_num between lower_num and upper_num
