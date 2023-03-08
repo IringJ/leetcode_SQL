@@ -1,0 +1,24 @@
+# Find median 
+
+with cte as (
+select 
+    id, 
+    company, 
+    salary,
+    row_number() over(
+        partition by company 
+        order by salary
+    ) rk,
+    count(*) over(
+        partition by company
+    ) t_num
+from 
+    employee 
+order by 
+    salary asc)
+select 
+    id, company, salary 
+from 
+    cte 
+where 
+    rk between (t_num/2) and (t_num/2+1)
