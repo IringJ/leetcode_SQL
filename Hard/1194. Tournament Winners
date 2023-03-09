@@ -1,0 +1,39 @@
+with c1 as(
+select
+    group_id,
+    player_id,
+    case 
+    when player_id = first_player then first_score
+    else second_score 
+    end score
+from 
+    players p
+join 
+    matches 
+on 
+    player_id =first_player or player_id =second_player),
+c2 as(
+select 
+    group_id, 
+    player_id,
+    sum(score) sum_
+from 
+    c1
+group by 
+    1, 2),
+c3 as(
+select 
+    group_id,
+    player_id,
+    row_number() over(
+        partition by group_id
+        order by sum_ desc, player_id) rk 
+from 
+    c2)
+select 
+    group_id,
+    player_id 
+from 
+    c3 
+where 
+    rk = 1
