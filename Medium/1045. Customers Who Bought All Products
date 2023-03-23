@@ -1,0 +1,25 @@
+## logic
+1. when [# of distinct products purchased by the customer = # of count(distinct product)] -->  the customer is considered to buy all products
+2. find the customer_id  
+
+
+## code 
+with c1 as(
+select
+    customer_id,
+    count(distinct product_key) cn_pro
+from 
+    customer 
+group by
+    customer_id),
+c2 as(
+select 
+    count(product_key) full_cn_pro
+from 
+    product)
+select 
+    customer_id
+from 
+    c1
+join 
+    c2 on c1.cn_pro = c2.full_cn_pro
